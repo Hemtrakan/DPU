@@ -1,0 +1,197 @@
+Table users {
+    ID int [pk,increment] 
+    PhoneNumber  string [not null]
+    Password string [not null]
+    Firstname string [not null]
+    Lastname string [not null]
+    Email string 
+    Birthday date 
+    Gender string [not null]
+    IDCard int [not null]
+    PathImageProfile string
+    CreatedAt datetime [not null]
+    UpdateAt datetime [not null]
+    DeletedAt datetime [not null]
+    DeletedBy int
+    Workplace string 
+    AddressID int 
+    RoleID int 
+  }
+  
+  Table OTP {
+    userID int [pk]
+    PhoneNumber string
+    Key int
+    VerifyCode string
+    ExpiredAt datetime
+    Active bool
+  }
+  
+  Ref : OTP.userID > users.ID
+  Ref : LogLogin.userID > users.ID
+  
+  Table LogLogin {
+    userID int [pk]
+    CreatedAt datetime [not null]
+    IP string
+    System string
+    
+  }
+  
+  Ref: roles.ID < users.RoleID
+  
+  Table roles {
+    ID int [pk,increment] 
+    Name string
+    CreatedAt datetime
+    UpdateAt datetime
+    DeletedAt datetime
+    DeletedBy int
+  }
+  
+  Ref: address.ID - users.AddressID
+  
+  Table address {
+    ID int [pk,increment] 
+    Address string
+    SubDistrict string
+    District string
+    Province string
+    PostalCode string
+    Country string 
+    CreatedAt datetime [not null]
+    UpdateAt datetime [not null]
+    DeletedAt datetime [not null]
+    DeletedBy int
+  }
+  
+  
+  Table IDCard {
+    IDCard string [pk]
+    PathImage string
+    CreatedAt datetime [not null]
+    UpdateAt datetime [not null]
+    DeletedAt datetime [not null]
+    DeletedBy int
+  }
+  
+  Ref: IDCard.IDCard - users.IDCard
+  
+  
+  Table History{
+    ID int
+    CreatedAt datetime [not null]
+    UpdateAt datetime [not null]
+    DeletedAt datetime [not null]
+    HotlineNumberID int
+    UserID int
+    Time Time
+  }
+  
+  Ref: HotlineNumber.ID < History.HotlineNumberID
+  Ref: users.ID < History.UserID 
+  
+  Table HotlineNumber {
+    ID int
+    Number string
+    Description string
+    CreatedAt datetime [not null]
+    UpdateAt datetime [not null]
+    DeletedAt datetime [not null]
+    DeletedBy int
+    UserIDLogUpdated int
+  }
+  
+  
+  Table GroupChat {
+    UserID int
+    RoomChatID int
+  }
+  
+  Ref: GroupChat.RoomChatID > RoomChat.ID
+  Ref: users.ID < GroupChat.UserID
+  
+  Table RoomChat {
+    ID int 
+    Name string
+    CreatedAt datetime [not null]
+    UpdateAt datetime [not null]
+    DeletedAt datetime [not null]
+    DeletedBy int
+  }
+  
+  Ref: RoomChat.ID < Message.RoomChatID
+  Ref: users.ID < Message.SenderUserId
+  
+  Table Message {
+    ID int
+    RoomChatID int
+    Message string
+    Image string
+    SenderUserId int
+    ReadingDate bool
+    DeletedAt datetime
+    DeletedBy int
+  }
+  
+  
+  Table Notification {
+    ID int
+    Description string
+    PhoneNumberCallBack string
+    UserID int 
+    CreatedAt datetime [not null]
+    UpdateAt datetime [not null]
+    DeletedAt datetime [not null]
+    DeletedBy int
+    SubTypeID int
+  }
+  
+  Ref: users.ID < Notification.ID
+  Ref: Notification.ID < NotificationImage.NotifyID
+  
+  Table NotificationImage {
+    ID int
+    Image string
+    NotifyID int
+  }
+  
+  Ref: Get_a_Job.NotifyID - Notification.ID
+  Ref: users.ID < Get_a_Job.UserID
+  
+  Table Get_a_Job {
+    NotifyID int
+    UserID int
+    Description string 
+    Status string
+    CreatedAt datetime [not null]
+    UpdateAt datetime [not null]
+    DeletedAt datetime [not null]
+    DeletedBy int
+  }
+   
+  
+  Table Tpye {
+      ID int
+      Name string
+      CreatedAt datetime [not null]
+      UpdateAt datetime [not null]
+      DeletedAt datetime [not null]
+      DeletedBy int
+  }
+  
+  Ref: Tpye.ID < SubType.TypeID
+  Ref: SubType.ID - Notification.SubTypeID
+  Table SubType {
+    ID int
+    Name string
+    TypeID int
+    CreatedAt datetime [not null]
+    UpdateAt datetime [not null]
+    DeletedAt datetime [not null]
+    DeletedBy int
+  }
+  
+  
+  
+   
